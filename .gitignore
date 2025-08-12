@@ -1,0 +1,4 @@
+# Ignore Python virtual environment
+Join-Tasks/Task1/venv/
+Join-Tasks/Task3/venv/
+

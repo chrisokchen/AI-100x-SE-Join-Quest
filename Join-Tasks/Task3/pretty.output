@@ -1,0 +1,171 @@
+@chess
+Feature: Chinese Chess (象棋) Rules # features/chess.feature:2
+  As a player
+  I want to follow standard Chinese Chess rules
+  So that I can play the game correctly
+  We use (row, col) to indicate positions on a 9×10 board.
+  Row 1 is Red’s bottom row; Row 10 is Black’s top row.
+  Column 1 is the leftmost column from Red’s perspective.
+  Each scenario sets up minimal conditions with relevant pieces.
+  @General
+  Scenario: Red moves the General within the palace (Legal)     # features/chess.feature:17
+    Given the board is empty except for a Red General at (1, 5) # features/steps/chess_steps.py:13
+    When Red moves the General from (1, 5) to (1, 4)            # features/steps/chess_steps.py:19
+    Then the move is legal                                      # features/steps/chess_steps.py:25
+
+  @General
+  Scenario: Red moves the General outside the palace (Illegal)  # features/chess.feature:23
+    Given the board is empty except for a Red General at (1, 6) # features/steps/chess_steps.py:36
+    When Red moves the General from (1, 6) to (1, 7)            # features/steps/chess_steps.py:42
+    Then the move is illegal                                    # features/steps/chess_steps.py:48
+
+  @General
+  Scenario: Generals face each other on the same file (Illegal)  # features/chess.feature:29
+    Given the board has:                                         # features/steps/chess_steps.py:58
+      | Piece         | Position |
+      | Red General   | (2, 4)   |
+      | Black General | (8, 5)   |
+    When Red moves the General from (2, 4) to (2, 5)             # features/steps/chess_steps.py:67
+    Then the move is illegal                                     # features/steps/chess_steps.py:48
+
+  @Guard
+  Scenario: Red moves the Guard diagonally in the palace (Legal)  # features/chess.feature:41
+    Given the board is empty except for a Red Guard at (1, 4)     # features/steps/chess_steps.py:74
+    When Red moves the Guard from (1, 4) to (2, 5)                # features/steps/chess_steps.py:80
+    Then the move is legal                                        # features/steps/chess_steps.py:25
+
+  @Guard
+  Scenario: Red moves the Guard straight (Illegal)            # features/chess.feature:47
+    Given the board is empty except for a Red Guard at (2, 5) # features/steps/chess_steps.py:86
+    When Red moves the Guard from (2, 5) to (2, 6)            # features/steps/chess_steps.py:92
+    Then the move is illegal                                  # features/steps/chess_steps.py:48
+
+  @Rook
+  Scenario: Red moves the Rook along a clear rank (Legal)    # features/chess.feature:56
+    Given the board is empty except for a Red Rook at (4, 1) # features/steps/chess_steps.py:99
+    When Red moves the Rook from (4, 1) to (4, 9)            # features/steps/chess_steps.py:105
+    Then the move is legal                                   # features/steps/chess_steps.py:25
+
+  @Rook
+  Scenario: Red moves the Rook and attempts to jump over a piece (Illegal)  # features/chess.feature:62
+    Given the board has:                                                    # features/steps/chess_steps.py:58
+      | Piece         | Position |
+      | Red Rook      | (4, 1)   |
+      | Black Soldier | (4, 5)   |
+    When Red moves the Rook from (4, 1) to (4, 9)                           # features/steps/chess_steps.py:105
+    Then the move is illegal                                                # features/steps/chess_steps.py:48
+
+  @Horse
+  Scenario: Red moves the Horse in an “L” shape with no block (Legal)  # features/chess.feature:74
+    Given the board is empty except for a Red Horse at (3, 3)          # features/steps/chess_steps.py:112
+    When Red moves the Horse from (3, 3) to (5, 4)                     # features/steps/chess_steps.py:118
+    Then the move is legal                                             # features/steps/chess_steps.py:25
+
+  @Horse
+  Scenario: Red moves the Horse and it is blocked by an adjacent piece (Illegal)  # features/chess.feature:80
+    Given the board has:                                                          # features/steps/chess_steps.py:58
+      | Piece      | Position |
+      | Red Horse  | (3, 3)   |
+      | Black Rook | (4, 3)   |
+    When Red moves the Horse from (3, 3) to (5, 4)                                # features/steps/chess_steps.py:118
+    Then the move is illegal                                                      # features/steps/chess_steps.py:48
+
+  @Cannon
+  Scenario: Red moves the Cannon like a Rook with an empty path (Legal)  # features/chess.feature:92
+    Given the board is empty except for a Red Cannon at (6, 2)           # features/steps/chess_steps.py:125
+    When Red moves the Cannon from (6, 2) to (6, 8)                      # features/steps/chess_steps.py:131
+    Then the move is legal                                               # features/steps/chess_steps.py:25
+
+  @Cannon
+  Scenario: Red moves the Cannon and jumps exactly one screen to capture (Legal)  # features/chess.feature:98
+    Given the board has:                                                          # features/steps/chess_steps.py:58
+      | Piece         | Position |
+      | Red Cannon    | (6, 2)   |
+      | Black Soldier | (6, 5)   |
+      | Black Guard   | (6, 8)   |
+    When Red moves the Cannon from (6, 2) to (6, 8)                               # features/steps/chess_steps.py:131
+    Then the move is legal                                                        # features/steps/chess_steps.py:25
+
+  @Cannon
+  Scenario: Red moves the Cannon and tries to jump with zero screens (Illegal)  # features/chess.feature:108
+    Given the board has:                                                        # features/steps/chess_steps.py:58
+      | Piece       | Position |
+      | Red Cannon  | (6, 2)   |
+      | Black Guard | (6, 8)   |
+    When Red moves the Cannon from (6, 2) to (6, 8)                             # features/steps/chess_steps.py:131
+    Then the move is illegal                                                    # features/steps/chess_steps.py:48
+
+  @Cannon
+  Scenario: Red moves the Cannon and tries to jump with more than one screen (Illegal)  # features/chess.feature:117
+    Given the board has:                                                                # features/steps/chess_steps.py:58
+      | Piece         | Position |
+      | Red Cannon    | (6, 2)   |
+      | Red Soldier   | (6, 4)   |
+      | Black Soldier | (6, 5)   |
+      | Black Guard   | (6, 8)   |
+    When Red moves the Cannon from (6, 2) to (6, 8)                                     # features/steps/chess_steps.py:131
+    Then the move is illegal                                                            # features/steps/chess_steps.py:48
+
+  @Elephant
+  Scenario: Red moves the Elephant 2-step diagonal with a clear midpoint (Legal)  # features/chess.feature:131
+    Given the board is empty except for a Red Elephant at (3, 3)                  # features/steps/chess_steps.py:138
+    When Red moves the Elephant from (3, 3) to (5, 5)                             # features/steps/chess_steps.py:144
+    Then the move is legal                                                        # features/steps/chess_steps.py:25
+
+  @Elephant
+  Scenario: Red moves the Elephant and tries to cross the river (Illegal)  # features/chess.feature:137
+    Given the board is empty except for a Red Elephant at (5, 3)           # features/steps/chess_steps.py:150
+    When Red moves the Elephant from (5, 3) to (7, 5)                      # features/steps/chess_steps.py:156
+    Then the move is illegal                                               # features/steps/chess_steps.py:48
+
+  @Elephant
+  Scenario: Red moves the Elephant and its midpoint is blocked (Illegal)  # features/chess.feature:143
+    Given the board has:                                                  # features/steps/chess_steps.py:58
+      | Piece        | Position |
+      | Red Elephant | (3, 3)   |
+      | Black Rook   | (4, 4)   |
+    When Red moves the Elephant from (3, 3) to (5, 5)                     # features/steps/chess_steps.py:144
+    Then the move is illegal                                              # features/steps/chess_steps.py:48
+
+  @Soldier
+  Scenario: Red moves the Soldier forward before crossing the river (Legal)  # features/chess.feature:155
+    Given the board is empty except for a Red Soldier at (3, 5)              # features/steps/chess_steps.py:163
+    When Red moves the Soldier from (3, 5) to (4, 5)                         # features/steps/chess_steps.py:169
+    Then the move is legal                                                   # features/steps/chess_steps.py:25
+
+  @Soldier
+  Scenario: Red moves the Soldier and tries to move sideways before crossing (Illegal)  # features/chess.feature:161
+    Given the board is empty except for a Red Soldier at (3, 5)                         # features/steps/chess_steps.py:163
+    When Red moves the Soldier from (3, 5) to (3, 4)                                    # features/steps/chess_steps.py:175
+    Then the move is illegal                                                            # features/steps/chess_steps.py:48
+
+  @Soldier
+  Scenario: Red moves the Soldier sideways after crossing the river (Legal)  # features/chess.feature:167
+    Given the board is empty except for a Red Soldier at (6, 5)              # features/steps/chess_steps.py:181
+    When Red moves the Soldier from (6, 5) to (6, 4)                         # features/steps/chess_steps.py:187
+    Then the move is legal                                                   # features/steps/chess_steps.py:25
+
+  @Soldier
+  Scenario: Red moves the Soldier and attempts to move backward after crossing (Illegal)  # features/chess.feature:173
+    Given the board is empty except for a Red Soldier at (6, 5)                           # features/steps/chess_steps.py:181
+    When Red moves the Soldier from (6, 5) to (5, 5)                                      # features/steps/chess_steps.py:193
+    Then the move is illegal                                                              # features/steps/chess_steps.py:48
+
+  @Winning
+  Scenario: Red captures opponent's General and wins immediately (Legal)  # features/chess.feature:182
+    Given the board has:                                                  # features/steps/chess_steps.py:58
+      | Piece         | Position |
+      | Red Rook      | (5, 5)   |
+      | Black General | (5, 8)   |
+    When Red moves the Rook from (5, 5) to (5, 8)                         # features/steps/chess_steps.py:200
+    Then Red wins immediately                                             # features/steps/chess_steps.py:221
+
+  @Winning
+  Scenario: Red captures a non-General piece and the game continues (Legal)  # features/chess.feature:191
+    Given the board has:                                                     # features/steps/chess_steps.py:58
+      | Piece        | Position |
+      | Red Rook     | (5, 5)   |
+      | Black Cannon | (5, 8)   |
+    When Red moves the Rook from (5, 5) to (5, 8)                            # features/steps/chess_steps.py:200
+    Then the game is not over just from that capture                         # features/steps/chess_steps.py:227
+
