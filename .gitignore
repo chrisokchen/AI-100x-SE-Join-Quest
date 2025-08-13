@@ -1,4 +1,6 @@
 # Ignore Python virtual environment
 Join-Tasks/Task1/venv/
 Join-Tasks/Task3/venv/
-
+Join-Tasks/Task3/.venv/
+Join-Tasks/Task3/.ruff_cache/
+Join-Tasks/Task3/.vscode/
