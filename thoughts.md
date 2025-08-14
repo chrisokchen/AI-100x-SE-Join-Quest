@@ -63,5 +63,16 @@ IDE: VS Code + GitHub Copilot
 在 BDD / Specification by Example 裡，Scenario 只是「**具體例子**」，本來就**不追求列舉全部情況**。若只寫了少數例子、又沒有把**規則（Rules）**說清楚，確實可能出現**多個彼此不同、但都能通過現有 Scenario 的實作**——也就是你說的「非唯一解」。([Gojko's blog][1], [martinfowler.com][2])
 
 
+任務 3 心得
 
-f
+-----
+repo: https://github.com/chrisokchen/AI-100x-SE-Join-Quest/
+language: Python
+BDD framework: Behave
+test framework: Pytest
+IDE: Kiro
+-----
+
+任務 3 : (/Join-Tasks/Task3/)
+
+Kiro 的 Spec-Driven 與 BDD 有點像，但規格用 EARS（Easy Approach to Requirements Syntax)，比較整理了
