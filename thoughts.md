@@ -1,14 +1,15 @@
-# 任務 1 心得
+
+任務 1 心得
 
 -----
-- repo: https://github.com/chrisokchen/AI-100x-SE-Join-Quest/
-- language: Python
-- BDD framework: Behave
-- test framework: Pytest
-- IDE: VS Code + GitHub Copilot
+repo: https://github.com/chrisokchen/AI-100x-SE-Join-Quest/
+language: Python
+BDD framework: Behave
+test framework: Pytest
+IDE: VS Code + GitHub Copilot
 -----
 
-## 任務 1 : (/Join-Tasks/Task1/)
+任務 1 : (/Join-Tasks/Task1/)
 
 
 這是我第一次接觸 BDD，做任務前先買了 "BDD in Action 2ed" 來抱佛腳，也選了 Udemy 的 Gherkin 課先搞清楚。
@@ -50,3 +51,17 @@
 ! 第三個問題： 後續的實作就真不管了嗎？
 
 擴充 雙11促銷時，AI 原先產生 double11_service 可是裡頭沒東西，而是硬寫進 order_service 裡，經要求重構才把各種 promotion 一起分離開來。
+
+
+
+
+
+
+
+! 以 BDD 開發時，feature 裡的 Scenario 例子如果沒有 cover 完全，是否可能產生出非唯一解?
+
+在 BDD / Specification by Example 裡，Scenario 只是「**具體例子**」，本來就**不追求列舉全部情況**。若只寫了少數例子、又沒有把**規則（Rules）**說清楚，確實可能出現**多個彼此不同、但都能通過現有 Scenario 的實作**——也就是你說的「非唯一解」。([Gojko's blog][1], [martinfowler.com][2])
+
+
+
+f
